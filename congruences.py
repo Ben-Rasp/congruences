@@ -1,65 +1,7 @@
 from turtle import *
-import math
-fenetre= Screen()
-speed(0)
+speed(0)        
 
-
-
-
-def point_decagone(longueur, diametre = 5, couleur = 'black'):
-    """Fonction pour faire les points des sommets d'un octogone"""
-    speed(0)
-    color('red')
-    for nb_cote in range(11):
-        left(360/11)
-        dot(diametre, couleur)
-        up(); forward(longueur); down()
-        
-def repere(xmin, xmax, xgrad, ymin, ymax, ygrad):
-    ##----- Fenêtre d'affichage et options -----##
-    ##fenetre = Screen()
-    ##fenetre.setworldcoordinates(xmin, ymin, xmax, ymax)
-    speed(0)										# Vitesse la plus rapide
-    color("black")
-    ##----- Axe des abscisses -----##
-    up()
-    goto(xmin, 0)
-    down()
-    goto(xmax, 0)
-    nbxgrad = int((xmax - xmin)/xgrad  + 1)
-    long_xgrad = (ymax - ymin)/400.0 * 5
-    for i in range(nbxgrad):
-        x = xmin + i * xgrad
-        up()
-        goto(x, -long_xgrad)
-        down()
-        goto(x, long_xgrad)
-    ##----- Axe des ordonnées -----##
-    up()
-    goto(0, ymin)
-    down()
-    goto(0, ymax)
-    nbygrad = int((ymax - ymin)/ygrad  + 1)
-    long_ygrad = (xmax - xmin)/400.0 * 5
-    for i in range(nbygrad):
-        y = ymin + i * ygrad
-        up()
-        goto(-long_ygrad, y)
-        down()
-        goto(long_ygrad, y)
-
-def carre(xmin,xmax):
-    color('red')
-    up()
-    for x in range(xmin,xmax):
-        y = x**2 / 300
-        goto(x,y)
-        down()
-    
-
-#repere(-400, 400, 50, -400, 400, 50)
-#carre(-300, 300)
-def cercle(x0, y0, n, modulo):
+def dessine_congruences(x0, y0, n, modulo):
     up(); goto(x0-15, y0-20); down();
     write(f'Congruences de {n} modulo {modulo}')
     up();goto(x0,y0); down()
@@ -73,8 +15,8 @@ def cercle(x0, y0, n, modulo):
         if modulo < 51:
             write(flag, align="left", font=("calibri", 12, "normal"))
         flag += 1
-    flag = 1
-    color = "red"
+#    flag = 1
+#    color = "red"
     for x in range(1,modulo):
         multiplication = n * x
         mod = multiplication % modulo
@@ -83,18 +25,54 @@ def cercle(x0, y0, n, modulo):
         goto(positions[x])
         down()
         goto(positions[mod])
+    return positions
 
-cercle(-300, 60, 18, 104)
-cercle(150, 60, 18, 105)
-cercle(-300, -320, 18, 106)
-cercle(150, -320, 18, 107)
+##dessine_congruences(-300, 60, 18, 47)
+##dessine_congruences(150, 60, 18, 48)
+##dessine_congruences(-300, -320, 18, 49)
+#dessine_congruences(150, -320, 18, 50)
 
+class Congruences:
+    def __init__(self, nombre, modulo):
+        self.nombre = nombre
+        self.modulo = modulo
+        self.positions = []
 
-
-
-
+    def dessine_cercle(self, xorigine=-100, yorigine=-200):
+        self.xorigine = xorigine
+        self.yorigine = yorigine
+        up(); goto(self.xorigine-25, self.yorigine-30); down();
+        write(f'Congruences de {self.nombre} modulo {self.modulo}',
+              font=("calibri", 14, "normal"))
+        up();goto(self.xorigine, self.yorigine); down()
+        flag = 0
+        for x in range(0,self.modulo):
+            forward(1500*1/self.modulo)
+            left(360/self.modulo)
+            dot()
+            self.positions.append(pos())
+            if self.modulo < 51:
+                write(flag, align="left", font=("calibri", 18, "normal"))
+            flag += 1
+        
+        for x in range(1,self.modulo):
+            multiplication = self.nombre * x
+            mod = multiplication % self.modulo
+            modx, mody = self.positions[mod]
+            up()
+            goto(self.positions[x])
+            down()
+            goto(self.positions[mod])
     
-    
+    def histogramme(self):
+        mods = [(self.nombre*x)% self.modulo for x in range(1, self.modulo)]
+        self.sommes_congruences= []
+        xaxis = [x for x in range(self.modulo)]
+        for m in xaxis:
+            self.sommes_congruences.append(mods.count(m))
+        self.fig = plt.plot(xaxis, self.sommes_congruences)
+        plt.show()
+        
+C = Congruences(4, 10)
+C.dessine_cercle()
 
-
-    
