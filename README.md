@@ -19,7 +19,7 @@ P2 (y0) = ordonnée à l'origine, pour placer le schéma à la bonne hauteur.
 P3 (n)  = le nombre dont on veut représenter la table de multiplications.
 P4 (modulo) = ...le modulo de cette table.
 
-# Les congruences.pdf
+# Les congruences.html
 Il s'agit d'un petit cours avec les explications du modulo et des lignes du code, accompagnées de mises en application, à partir
 d'un notebook.
 
